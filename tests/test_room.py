@@ -10,23 +10,24 @@ class TestRoom(unittest.TestCase):
                     Song("We will rock you)", "Queen", 122, 1977, "classic rock"), 
                     Song("I'm gonna be (500 miles)", "The Proclaimers", 217, 1988, "folk rock"),
                     Song("It's raining men", "The Weather Girls", (60 * 5) + 24, 1982, "post-disco"),
-                    Song("Livin' on a prayer", "Bon Jovi", (60 * 4) + 11, 1986, "classic rock"),
-                    Song("Thunderstruck", "AC/DC", 292, 1990, "rock")
+                    Song("Livin' on a prayer", "Bon Jovi", (60 * 4) + 11, 1986, "classic rock")
         ]
 
         self.large = Room("Party room", 15)
         self.medium = Room("Beats room", 10)
         self.small = Room("Chillout room", 5)
 
-        self.acdc_fan = Guest("Allen", self.playlist[0])
+        self.acdc_fan = Guest("Allen", 50, self.playlist[0])
 
         self.party = [
-                Guest("John", self.playlist[0]),
-                Guest("Paul", self.playlist[1]),
-                Guest("George", self.playlist[2]),
-                Guest("Ringo", self.playlist[3]),
-                Guest("Stuart", self.playlist[4]),
+                Guest("John", 50, self.playlist[0]),
+                Guest("Paul", 30, self.playlist[1]),
+                Guest("George", 80, self.playlist[2]),
+                Guest("Ringo", 25, self.playlist[3]),
+                Guest("Stuart", 20, self.playlist[4])                
         ]
+
+        self.forgotten_beatle = Guest("Pete", 4.50, self.playlist[0])
 
     # Test room attributes
     def test_room_has_name(self):
@@ -40,6 +41,12 @@ class TestRoom(unittest.TestCase):
 
     def test_room_song_list_empty(self):
         self.assertEqual(0, len(self.large.songs))
+
+    def test_room_has_fee(self):
+        self.assertEqual(5, self.large.room_fee)
+
+    def test_room_has_till(self):
+        self.assertEqual(0, self.large.till)
 
     # Test room methods
     # 1: checking guests in
@@ -58,7 +65,7 @@ class TestRoom(unittest.TestCase):
 
         self.assertEqual("Cannot add guest: Room is full", self.small.check_in(self.acdc_fan))
             
-    # 2: checking guest out
+    # 2: checking guests out
     def test_guest_check_out_of_room(self):
         self.large.check_in(self.acdc_fan)
         self.assertEqual("Allen has left Party room", 
@@ -80,6 +87,20 @@ class TestRoom(unittest.TestCase):
     def test_song_already_added(self):
         self.large.add_song(self.playlist[0])
         self.assertTrue(len(self.large.songs) == 1)
+
+    def check_guest_can_afford_fee(self):
+        self.assertTrue(self.large.guest_can_pay(self.acdc_fan))
+
+    def check_guest_cannot_afford_fee(self):
+        self.assertFalse(self.large.guest_can_pay(self.forgotten_beatle))
+
+    def add_money_to_till(self):
+        self.large.add_to_till(10)
+        self.assertEqual(10, self.large.till)
+
+    # Integration test
+
+
 
 
 
