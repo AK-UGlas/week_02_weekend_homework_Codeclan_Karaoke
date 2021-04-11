@@ -6,7 +6,7 @@ class TestGuest(unittest.TestCase):
     def setUp(self):
         self.thunderstruck = Song("Thunderstruck", "AC/DC", 292, 1990, "Rock")
         self.guest = Guest("Dave", 50, self.thunderstruck)
-
+        
 # testing Guest attributes
     def test_guest_has_name(self):
         self.assertEqual("Dave", self.guest.name)
@@ -18,8 +18,16 @@ class TestGuest(unittest.TestCase):
         self.assertEqual(50, self.guest.wallet)
 
 # test methods
-    def test_guest_can_pay_for_item(self):
+    def test_guest_pays_for_item(self):
         self.guest.pay(5)
         self.assertEqual(45, self.guest.wallet)
 
+    def test_favourite_song_is_on_playlist(self):
+        playlist = [self.thunderstruck]
+        self.assertEqual("YAAAASSSS!!!!", self.guest.woop_obnoxiously(playlist))
 
+    def test_guest_can_afford_item(self):
+        self.assertTrue(self.guest.can_afford_item(10))
+
+    def test_guest_cannot_afford_item(self):
+        self.assertFalse(self.guest.can_afford_item(50.01))

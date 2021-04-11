@@ -6,11 +6,11 @@ from src.guest import Guest
 class TestRoom(unittest.TestCase):
     def setUp(self):
         self.playlist = [
-                    Song("Thunderstruck", "AC/DC", 292, 1990, "rock"),
-                    Song("We will rock you)", "Queen", 122, 1977, "classic rock"), 
-                    Song("I'm gonna be (500 miles)", "The Proclaimers", 217, 1988, "folk rock"),
-                    Song("It's raining men", "The Weather Girls", (60 * 5) + 24, 1982, "post-disco"),
-                    Song("Livin' on a prayer", "Bon Jovi", (60 * 4) + 11, 1986, "classic rock")
+            Song("Thunderstruck", "AC/DC", 292, 1990, "rock"),
+            Song("We will rock you)", "Queen", 122, 1977, "classic rock"), 
+            Song("I'm gonna be (500 miles)", "The Proclaimers", 217, 1988, "folk rock"),
+            Song("It's raining men", "The Weather Girls", (60 * 5) + 24, 1982, "post-disco"),
+            Song("Livin' on a prayer", "Bon Jovi", (60 * 4) + 11, 1986, "classic rock")
         ]
 
         self.large = Room("Party room", 15)
@@ -20,11 +20,11 @@ class TestRoom(unittest.TestCase):
         self.acdc_fan = Guest("Allen", 50, self.playlist[0])
 
         self.party = [
-                Guest("John", 50, self.playlist[0]),
-                Guest("Paul", 30, self.playlist[1]),
-                Guest("George", 80, self.playlist[2]),
-                Guest("Ringo", 25, self.playlist[3]),
-                Guest("Stuart", 20, self.playlist[4])                
+            Guest("John", 50, self.playlist[0]),
+            Guest("Paul", 30, self.playlist[1]),
+            Guest("George", 80, self.playlist[2]),
+            Guest("Ringo", 25, self.playlist[3]),
+            Guest("Stuart", 20, self.playlist[4])                
         ]
 
         self.forgotten_beatle = Guest("Pete", 4.50, self.playlist[0])
@@ -44,9 +44,6 @@ class TestRoom(unittest.TestCase):
 
     def test_room_has_fee(self):
         self.assertEqual(5, self.large.room_fee)
-
-    def test_room_has_till(self):
-        self.assertEqual(0, self.large.till)
 
     # Test room methods
     # 1: checking guests in
@@ -88,18 +85,9 @@ class TestRoom(unittest.TestCase):
         self.large.add_song(self.playlist[0])
         self.assertTrue(len(self.large.songs) == 1)
 
-    def check_guest_can_afford_fee(self):
-        self.assertTrue(self.large.guest_can_pay(self.acdc_fan))
-
-    def check_guest_cannot_afford_fee(self):
-        self.assertFalse(self.large.guest_can_pay(self.forgotten_beatle))
-
-    def add_money_to_till(self):
-        self.large.add_to_till(10)
-        self.assertEqual(10, self.large.till)
-
     # Integration test
-
+    def test_run_karaoke_room(self):
+        pass
 
 
 

@@ -1,3 +1,5 @@
+from src.bar import Bar
+
 class Room:
     def __init__(self, name, capacity):
         self.name = name
@@ -7,7 +9,7 @@ class Room:
         self.songs = []
 
         self.room_fee = 5
-        self.till = 0
+        self.bar = Bar()
         
     def check_in(self, guest):
         # check guest isn't already in the room
@@ -17,9 +19,9 @@ class Room:
         # check room has adequate capacity for another guest
         if len(self.guest_list) < self.capacity:
             # check guest has money to pay room fee
-            if self.guest_can_pay(guest):
+            if guest.can_afford_item(self.room_fee):
                 guest.pay(self.room_fee)
-                self.add_to_till(self.room_fee)
+                self.bar.add_to_till(self.room_fee)
                 self.guest_list.append(guest)
                 return f"{guest.name} checked in to {self.name}"
         
@@ -39,11 +41,7 @@ class Room:
         if song not in self.songs:
             self.songs.append(song)
 
-    def add_to_till(self, amount):
-        self.till += amount
 
-    def guest_can_pay(self, guest):
-        return guest.wallet >= self.room_fee
 
 
             
