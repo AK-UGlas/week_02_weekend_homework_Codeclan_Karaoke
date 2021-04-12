@@ -23,6 +23,7 @@ class Room:
                 guest.pay(self.room_fee)
                 self.bar.add_to_till(self.room_fee)
                 self.guest_list.append(guest)
+                guest.woop_obnoxiously(self.songs)
                 return f"{guest.name} checked in to {self.name}"
         
         return "Cannot add guest: Room is full"

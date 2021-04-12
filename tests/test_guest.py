@@ -24,7 +24,7 @@ class TestGuest(unittest.TestCase):
 
     def test_favourite_song_is_on_playlist(self):
         playlist = [self.thunderstruck]
-        self.assertEqual("YAAAASSSS!!!!", self.guest.woop_obnoxiously(playlist))
+        self.assertEqual("YAAAASSSS!!!!, they've got Thunderstruck!", self.guest.woop_obnoxiously(playlist))
 
     def test_guest_can_afford_item(self):
         self.assertTrue(self.guest.can_afford_item(10))

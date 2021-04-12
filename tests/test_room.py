@@ -2,6 +2,8 @@ import unittest
 from src.room import Room
 from src.song import Song
 from src.guest import Guest
+from src.bar import Bar
+from src.drink import Drink
 
 class TestRoom(unittest.TestCase):
     def setUp(self):
@@ -87,7 +89,42 @@ class TestRoom(unittest.TestCase):
 
     # Integration test
     def test_run_karaoke_room(self):
-        pass
+        # set up a karaoke room:
+        # add drinks to the bar
+        lager = Drink("Tennants", 1.50, 15)
+        stout = Drink("Guinness", 3.50, 25)
+        wine = Drink("Sauvignon Blanc", 4.00, 30)
+        self.small.bar.stock_bar(wine, 20)
+        self.small.bar.stock_bar(lager, 40)
+        self.small.bar.stock_bar(stout, 10) 
+        # add guests, add a couple of songs to playlist
+        self.small.add_song(self.playlist[2])
+        self.small.add_song(self.playlist[3])
+
+        for guest in self.party:
+            self.small.check_in(guest)
+
+        self.assertEqual(self.small.capacity, len(self.small.guest_list))
+
+        # guests buy some drinks over the evening then check out
+        self.small.bar.sell_drink(self.small.guest_list[0], lager)
+        self.small.bar.sell_drink(self.small.guest_list[3], stout)
+        self.small.bar.sell_drink(self.small.guest_list[4], wine)
+
+        self.assertEqual(43.50, self.small.guest_list[0].wallet)
+        self.assertEqual(75, self.small.guest_list[2].wallet)
+        self.assertEqual(16.50, self.small.guest_list[3].wallet)
+
+        for guest in self.party:    
+            self.small.check_out(guest)
+
+        self.assertEqual(0, len(self.small.guest_list))
+
+        # check till total matches expected
+        expected_total = (5 * self.small.room_fee) + 1.50 + 3.50 + 4.00
+        self.assertEqual(expected_total, self.small.bar.till)
+
+
 
 
 
